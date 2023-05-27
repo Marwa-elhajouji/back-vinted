@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const test = 1;
 
 const Offer = mongoose.model("Offer", {
   product_name: String,
