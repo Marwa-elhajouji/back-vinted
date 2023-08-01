@@ -5,11 +5,7 @@ const fileupload = require("express-fileupload");
 const cloudinary = require("cloudinary").v2;
 const isAuthenticated = require("../middlewares/isAuthenticated");
 const convertToBase64 = require("../utils/convertedB64");
-cloudinary.config({
-  cloud_name: "dlgs0u8oo",
-  api_key: "853298961469457",
-  api_secret: "I2xzksNM0rQi9SLhmGqrD0OijI8",
-});
+
 router.post(
   "/offer/publish",
   isAuthenticated,
@@ -17,7 +13,7 @@ router.post(
   async (req, res) => {
     try {
       const { title, description, price, condition, city, brand, size, color } =
-        req.body;
+        req.body
       const newOffer = new Offer({
         product_name: title,
 
@@ -25,35 +21,31 @@ router.post(
         product_price: price,
         product_details: [
           {
-            MARQUE: brand,
+            MARQUE: brand
           },
           {
-            TAILLE: size,
+            TAILLE: size
           },
           {
-            ÉTAT: condition,
+            ÉTAT: condition
           },
           {
-            COULEUR: color,
+            COULEUR: color
           },
           {
-            EMPLACEMENT: city,
-          },
+            EMPLACEMENT: city
+          }
         ],
-        owner: req.user,
-      });
-      // console.log(product_price);
-      // console.log(newOffer.product_price);
-      // console.log(newOffer.product_name);
-      // console.log(title);
-      // console.log(product_price);
+        owner: req.user
+      })
+
       if (req.files) {
-        const pictureToUpload = convertToBase64(req.files.picture);
-        const uploadrResult = await cloudinary.uploader.upload(pictureToUpload);
-        newOffer.product_image = uploadrResult;
+        const pictureToUpload = convertToBase64(req.files.picture)
+        const uploadrResult = await cloudinary.uploader.upload(pictureToUpload)
+        newOffer.product_image = uploadrResult
       }
-      await newOffer.save();
-      res.json(newOffer);
+      await newOffer.save()
+      res.json(newOffer)
     } catch (error) {
       res.json(error.message);
     }
